@@ -43,5 +43,5 @@ def init_app(app):
     :param app: the application
     :return: None
     """
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+    # app.teardown_appcontext(close_db)
+    # app.cli.add_command(init_db_command)
