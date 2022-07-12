@@ -5,7 +5,6 @@ from flask.cli import with_appcontext
 
 
 def get_db():
-    print('GET_DB called')
     if 'db' not in g:
         g.db = sqlite3.connect(
                 current_app.config['DATABASE'],
@@ -15,8 +14,12 @@ def get_db():
     return g.db
 
 
-def close_db():
+# app.teardown_appcontext(close_db) passes an unused parameter to this function
+# which causes an error unless a parameter is defined.
+# Underscore will do for an unused parameter
+def close_db(_):
     db = g.pop('db', None)
+    print('close db', str(db))
     if db is not None:
         db.close()
 
@@ -44,5 +47,5 @@ def init_app(app):
     :param app: the application
     :return: None
     """
-    # app.teardown_appcontext(close_db)
+    app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
