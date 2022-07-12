@@ -9,7 +9,7 @@
         <label for="title">Title</label>
         <input id="title" name="title" value="{{ request.form['title'] }}" required>
         <label for="body">Body</label>
-        <textarea id="body" name="body" for="{{ request.form['body'] }} "></textarea>
-        <button type="submit" value="Submit"></button>
+        <textarea id="body" name="body">{{ request.form['body'] }}</textarea>
+        <input type="submit" value="Submit"/>
     </form>
 {% endblock %}
