@@ -17,7 +17,6 @@ def index():
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
-
     if request.method != 'POST':
         return render_template('register.html')
 
@@ -44,6 +43,7 @@ def register():
         else:
             return redirect(url_for('auth.login'))
     flash(error)
+    return render_template('register.html')
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -68,9 +68,9 @@ def login():
         session.clear()
         session['user_id'] = user['id']
         return redirect(url_for('auth.index'))
-
-    flash(error)
-    return render_template('login.html')
+    else:
+        flash(error)
+        return render_template('/register.html')
 
 
 @bp.before_app_request
@@ -88,7 +88,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('auth.login'))
 
 
 def login_required(view):
