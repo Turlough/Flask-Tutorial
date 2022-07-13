@@ -37,3 +37,23 @@ def test_register_validate_input(client, username, password, message):
             data={'username': username, 'password': password}
     )
     assert message in response.data
+
+
+def test_login_get(client, auth):
+    response = client.get('/auth/login')
+    assert response.status_code == 200
+
+
+def test_successful_login_redirects(client, auth):
+    response = auth.login()
+    assert response.status_code == 302
+    assert response.headers['Location'] == '/auth/index'
+
+
+def test_credentials_persist(client, auth):
+    auth.login()
+    with client:
+        client.get('/')
+        assert session['user_id'] == 1
+        assert g.user['username'] == 'test'
+
